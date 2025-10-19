@@ -51,11 +51,15 @@ const clearFn = (e = null) => {
       mouseIn = false;
       lastId = null;
 
-      if (e?.relatedTarget == popUp) resolve();
-      return;
+      if (e?.relatedTarget == popUp) {
+        resolve();
+        return;
+      }
     }
 
     popUp.style.opacity = "0";
+
+    console.log("Clear");
 
     setTimeout(() => {
       if (popUp.style.opacity == "0") popUp.style.display = "none";
@@ -97,4 +101,7 @@ canvas.addEventListener("mouseenter", () => {
   mouseIn = true;
 });
 
-canvas.addEventListener("mouseleave", clearFn);
+canvas.addEventListener("mouseleave", (e) => {
+  mouseIn = false;
+  clearFn(e);
+});
