@@ -85,7 +85,7 @@ canvas.addEventListener(
     const amount = chartData[id];
     const paragraphs = popUp.querySelectorAll("p");
 
-    paragraphs[0].innerText = `Element: ${id}`;
+    paragraphs[0].innerText = `Element: ${id + 1}`;
     paragraphs[1].innerText = `Amount: ${amount}`;
 
     const postionX = e.pageX;
