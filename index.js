@@ -4,7 +4,7 @@ const ctx = canvas.getContext("2d");
 
 let mouseIn = false;
 let lastId = null;
-const chartData = [100, 200, 250, 100, 180, 100, 200, 250, 100, 100];
+const chartData = [100, 200, 250, 100, 180, 100, 200, 250, 100, 125];
 
 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -12,16 +12,30 @@ const barWidth =
   400 / chartData.length - ((chartData.length - 1) * 2) / chartData.length;
 
 const chartPostions = [];
+const cornerRadius = 10;
 
 chartData.forEach((amount, i) => {
   ctx.beginPath();
   ctx.fillStyle = i % 2 == 0 ? "#4CAF50" : "yellow";
-  ctx.fillRect(barWidth * i + i * 2, 300 - amount, barWidth, amount);
+
+  const x = barWidth * i + i * 2;
+  const y = 300 - amount;
+
+  ctx.moveTo(x + cornerRadius, y);
+  ctx.lineTo(x + barWidth - cornerRadius, y);
+  ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + cornerRadius);
+  ctx.lineTo(x + barWidth, y + amount);
+  ctx.lineTo(x, y + amount);
+  ctx.lineTo(x, y + cornerRadius);
+  ctx.quadraticCurveTo(x, y, x + cornerRadius, y);
+
+  ctx.fill();
+
   chartPostions.push({
     i,
-    xStart: barWidth * i + i * 2,
-    xEnd: barWidth * i + i * 2 + barWidth,
-    yStart: 300 - amount,
+    xStart: x,
+    xEnd: x + barWidth,
+    yStart: y,
   });
 });
 
@@ -59,10 +73,7 @@ const clearFn = (e = null) => {
 
     popUp.style.opacity = "0";
 
-    console.log("Clear");
-
     setTimeout(() => {
-      if (popUp.style.opacity == "0") popUp.style.display = "none";
       resolve();
     }, 200);
   });
@@ -90,11 +101,10 @@ canvas.addEventListener(
 
     const postionX = e.pageX;
     const postionY = e.pageY;
-    popUp.style.display = "block";
     popUp.style.opacity = "1";
     popUp.style.left = postionX - 40 + "px";
     popUp.style.top = postionY - 50 + "px";
-  }, 300)
+  }, 100)
 );
 
 canvas.addEventListener("mouseenter", () => {

@@ -24,7 +24,7 @@ body {
   padding: 5px;
   font-size: 12px;
   opacity: 0;
-  display: none;
+  display: block;
   transition: opacity 200ms ease-in-out;
 }
 
