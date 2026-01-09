@@ -25,7 +25,8 @@ body {
   font-size: 12px;
   opacity: 0;
   display: block;
-  transition: opacity 200ms ease-in-out;
+  transition: all 200ms ease-in-out;
+  user-select: none;
 }
 
 .pop-up::after {

@@ -149,12 +149,14 @@ canvas.addEventListener(
 
     const id = findId(e.offsetX, e.offsetY);
 
-    if (id == undefined || id === -1) return await clearFn();
+    if (id == undefined || id === -1) {
+      lastId = null;
+      return await clearFn();
+    }
+    
     if (id == lastId) return;
 
     await clearFn();
-
-    lastId = id;
 
     const amount = chartData[id];
     const paragraphs = popUp.querySelectorAll("p");
@@ -164,9 +166,23 @@ canvas.addEventListener(
 
     const postionX = e.pageX;
     const postionY = e.pageY;
+
+    if (lastId == null) {
+      popUp.style.left = postionX - 40 + "px";
+      popUp.style.top = postionY - 50 + "px";
+
+      setTimeout(() => {
+        popUp.style.opacity = "1";
+      }, 200);
+
+      lastId = id;
+      return;
+    }
     popUp.style.opacity = "1";
     popUp.style.left = postionX - 40 + "px";
     popUp.style.top = postionY - 50 + "px";
+
+    lastId = id;
   }, 100)
 );
 
